@@ -20,6 +20,15 @@ class CoffeeController < ApplicationController
     render json: @coffee
   end
 
+  def coffee_analysis
+    @selected_date = 1.day.ago
+
+    @brewing_coffee_count = Coffee.where(:created_at => @selected_date.beginning_of_day..@selected_date.end_of_day,
+                                         :status => "brewing").count
+    
+    render json: @brewing_coffee_count
+  end
+
   private
     def coffee_params
       params.permit(:status)
